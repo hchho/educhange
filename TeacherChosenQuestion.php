@@ -20,26 +20,28 @@
     </head>
 
     <body>
+        <div class="container">
+        <center>
         <h1>Question</h1>
-        <div>
+        
         <?php
             
             $StudentName = $_GET['StudentName'];
             $QuestionText = $_GET['QuestionText'];
             
-            echo "Student: " . $StudentName;
-            echo "</br>";
-            echo "Question: " . $QuestionText;
+            echo "<h3>Student: </h3></span>";
+            echo "<h2 style='Background-color:white'>".$StudentName."<h2>";
+            echo "<h3>Question:<h3>";
+            echo "<h2 style='Background-color:white'>".$QuestionText."<h2>";
             ?>
-        </div>
-        <button onclick="award()">Award</button>
+        
+        <button class="btn-success" onclick="award()">Award</button>
         <br>
         
-        <button onClick="window.location.href='TeachersChoiceOfQuestions.html'">Back</button>
+        <button class="btn-danger" onClick="window.location.href='TeachersChoiceOfQuestions.html'">Back</button>
 
-       
-       
-        
-        
+        </center>
+        </div>
+
     </body>
 </html>

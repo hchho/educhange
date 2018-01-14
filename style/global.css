@@ -2,6 +2,10 @@ body {
   background-color: #bbbbbb;
 }
 
+.container {
+    margin-top: 50%;
+}
+
 .form-group {
   padding-top: 10%;
   font-size: 30px;
@@ -22,4 +26,16 @@ button {
 	color: white;
 	font-size: 20px;
 	margin-top: 20px;
+    width: 80%;
+    height: 100px;
+    font-size: 150%;
+}
+
+td {
+    font-weight: bold;
+}
+
+.tableDiv {
+    height: 600px;;
+    overflow: auto;
 }
