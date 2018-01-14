@@ -1,0 +1,18 @@
+ol{
+    list-style-type: none;
+    padding-left: 0px;
+    padding-top: 0px;
+    margin:10px;
+    font-size: 15px;
+}
+
+li:nth-child(odd){
+    background-color: #c8e9f7;
+}
+li:nth-child(even){
+    background-color: #ffffff;
+}
+li{
+    padding: 5px;
+
+}
