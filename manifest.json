@@ -1,0 +1,7 @@
+{
+  "name": "Educhange",
+  "short_name": "Educhange",
+  "start_url": "/server-test.html",
+  "display": "standalone",
+  "orientation": "portrait"
+}
