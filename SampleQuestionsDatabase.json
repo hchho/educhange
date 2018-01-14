@@ -1,8 +1,8 @@
-var Questions = [
-    {StudentName: "Millie Bobby Brown",
-     QuestionText: "Why is the sky Blue"
-    },
-    {StudentName: "Mark Hamill",
-    QuestionText: "Why is the grass green?"
-    }
+
+var QuestionsDB = [ { 
+    StudentName: "Millie Bobby Brown",
+    Question: "Why is the sky blue"
+}, { 
+    StudentName: "Ritchie Tosure",
+    Question: "Why is the grass green?"
 }];

@@ -7,8 +7,12 @@
     </head>
     <body>
         <a href="">Popular Vote</a>
-        <a href="TeachersChoiceOfQuestions.php">Teacher's Choice</a>
+        <br>
+        <a href="TeachersChoiceOfQuestions.html">Teacher's Choice</a>
+        <br>
+        <button onClick="window.location.href='NewTeacherSession.php'">Back</button>
 
+        
     </body>
 
 </html>

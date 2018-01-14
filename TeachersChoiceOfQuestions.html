@@ -11,22 +11,20 @@
         <title>All Questions</title>
         <script type="text/javascript">
         $(function() {
-            $getQuestionData = function(){
-             $.getJSON(SampleQuestionsDatabase.json, function(object) {
-                    $.each(object, function(index, data){
-                        $addRowData(data.QuestionText);
-                    });
-                });
+            //figure out how to get data from database here
+            $addRowData = function(StudentName, QuestionText){
+               
+               $('#QuestionsTable').append('<tr><td><a href="TeacherChosenQuestion.php?StudentName='+StudentName+'&QuestionText='+QuestionText+'">'+StudentName+": "+QuestionText+'</a></td></tr>');
             }
             
-            $addRowData = function(QuestionText){
-                $('<tr>'+QuestionText+'</tr>').appendto($('#QuestionsTable'));
+            for(var i = 1; i <= 10; i++){
+                $addRowData("Student"+i,"Question"+i)
             }
             
             
-            $getQuestionData();
         });
         
+            
         
         </script>
         
@@ -37,9 +35,8 @@
     <body>
         <h1>Questions</h1>
         <table id="QuestionsTable">
-        
-        
         </table>
+        <button onClick="window.location.href='TeacherSelectionChoice.php'">Back</button>
 
     </body>
 </html>
