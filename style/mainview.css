@@ -1,18 +1,54 @@
 ol{
     list-style-type: none;
     padding-left: 0px;
-    padding-top: 0px;
-    margin:10px;
+    padding-top: 0p;
+    margin:1px;
     font-size: 15px;
+    border-radius: 10px;
+}
+h1{
+  font-size: 20px;
+  font-weight: bold;
 }
 
 li:nth-child(odd){
-    background-color: #c8e9f7;
+    background-color: #dbdbdb;
 }
 li:nth-child(even){
     background-color: #ffffff;
 }
 li{
-    padding: 5px;
+    padding: 3px;
+    height: 25px;
+}
+#lol{
+  background-color: white;
+}
+.chunk1{
+  display:inline-block;
+  width: 250px;
+}
+.chunk2{
+  display:inline-block;
+  width: 250px;
+}
+.chunk3{
+    width: 500px;
+    margin:auto;
+}
+.main-chunk{
+  text-align: center;
+}
 
+button {
+	border-radius: 10px;
+	padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+	background-color: #292929;
+	border: none;
+	color: white;
+	font-size: 20px;
+	margin-top: 20px;
 }
