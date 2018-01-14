@@ -12,8 +12,6 @@
         <!-- Save the Session ID and Date Created to the Teacher's Database -->
         <center>
             <?php 
-
-
                 echo "<h1>Session ID: " . mt_rand()."</h1>";
                 ?>
             <br>

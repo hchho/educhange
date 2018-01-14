@@ -36,6 +36,7 @@ td {
 }
 
 .tableDiv {
-    height: 600px;;
+    font-size: 100%;
+    height: 400px;
     overflow: auto;
 }
