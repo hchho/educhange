@@ -14,103 +14,90 @@
  * limitations under the License.
  */
 'use strict';
-
 // Initializes EduChange.
 function EduChange() {
   this.checkSetup();
+  // this.signupButton = document.getElementById('sign-up');
+  this.signinButton = document.getElementById('sign-in');
+  // this.signupButton.addEventListener('click', this.signUp.bind(this));
+  this.sessionButton = document.getElementById('create-session');
 
-  this.dataForm = document.getElementById('data-form')
-  
-  
-  // this.dataInput = document.getElementById('data');
-  // Shortcuts to DOM Elements.
-  
-  this.dataForm.addEventListener('refresh', this.loadData.bind(this));
-  this.loadButton = document.getElementById('load');
-  this.refreshButton = document.getElementById('refresh');
-  // Toggle for the button.
-  var buttonTogglingHandler = this.toggleButton.bind(this);
-  
-  this.loadButton.addEventListener('click', this.loadData.bind(this));
-  this.refreshButton.addEventListener('click', this.displayData.bind(this));
-  // this.dataInput.addEventListener('keyup', buttonTogglingHandler);
-  // this.dataInput.addEventListener('change', buttonTogglingHandler);
-
+  this.sessionButton.addEventListener('click', this.createSession.bind(this));
+  this.signinButton.addEventListener('click', this.signIn.bind(this));
   this.initFirebase();
-}
+};
 
-// Sets up shortcuts to Firebase features and initiate firebase auth.
 EduChange.prototype.initFirebase = function() {
   // TODO(DEVELOPER): Initialize Firebase.
   this.auth = firebase.auth();
   this.database = firebase.database();
   this.storage = firebase.storage();
 
-  this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));  
+  // this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));  
 };
 
-// Loads chat messages history and listens for upcoming ones.
-EduChange.prototype.loadData = function() {
-
-  // TODO(DEVELOPER): Load and listens for new messages.
-  // Reference to the /messages/ database path.
-  this.usersRef = this.database.ref('user');
-  // Make sure we remove all previous listeners.
-  this.usersRef.off();
-
-  // Loads the last 12 messages and listen for new ones.
-  var setData = function(data) {
-    var val = data.val();
-    this.displayData(data.key, val.username, val.type);
-  }.bind(this);
-  this.usersRef.limitToLast(12).on('child_added', setData);
-  this.usersRef.limitToLast(12).on('child_changed', setData);
-  document.write("Loaded data");
+EduChange.prototype.signIn = function() {
+  // TODO(DEVELOPER): Sign in Firebase with credential from the Google user.
+  var provider = new firebase.auth.GoogleAuthProvider();
+  this.auth.signInWithPopup(provider);
 };
 
-
-// Resets the given MaterialTextField.
-EduChange.resetMaterialTextfield = function(element) {
-  element.value = '';
-  element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
+// Signs-out of Friendly Chat.
+EduChange.prototype.signOut = function() {
+  // TODO(DEVELOPER): Sign out of Firebase.
+  this.auth.signOut();
 };
 
-// Template for messages.
-EduChange.MESSAGE_TEMPLATE =
-    '<div class="info-container">' +
-      '<div class="user-id"></div>' +
-      '<div class="username"></div>' +
-      '<div class="type"></div>' + 
-    '</div>';
-
-// Displays a Message in the UI.
-EduChange.prototype.displayData = function(key, username, type) {
-  var div = document.getElementById(key);
-  // If an element for that message does not exists yet we create it.
-  if (!div) {
-    var container = document.createElement('div');
-    container.innerHTML = EduChange.MESSAGE_TEMPLATE;
-    div = container.firstChild;
-    div.setAttribute('user-id', key);
-    this.messageList.appendChild(div);
-  }
-
-  div.querySelector('.username').textContent = username;
-  var type = div.querySelector('.type');
-  if (type) { // If the message is text.
-    messageElement.textContent = type;
-  } 
-  // Show the card fading-in.
-  setTimeout(function() {div.classList.add('visible')}, 1);
-  this.messageList.scrollTop = this.messageList.scrollHeight;
-  // this.dataInput.focus();
+EduChange.prototype.createSession = function() {
+  // var userName = document.getElementById('signup-info');
+  // var type = document.getElementById('user-type')
+  var currentUser = this.auth.currentUser;
+  var usersRef = firebase.database().ref().child('sessions');
+  
+  usersRef.push({
+    // newUser.push({
+    teacher_id: currentUser.displayName,
+    date: new Date()
+  });
 };
 
-// Enables or disables the submit button depending on the values of the input
-// fields.
-EduChange.prototype.toggleButton = function() {
+// EduChange.prototype.signUp = function() {
+  
+//   var userName = document.getElementById('signup-info');
+//   var type = document.getElementById('user-type')
+//   var usersRef = firebase.database().ref().child('user');
+//   usersRef.push({
+//     // newUser.push({
+//     type: type.value,
+//     username: userName.value
+//   });
+//   // console.log(userName.value);
+// };
 
-};
+
+// EduChange.prototype.signIn = function() {
+  
+//   var userName = document.getElementById('login-info');
+//   var usersRef = firebase.database().ref().child('user');
+//   // usersRef.orderByChild('username').equalTo(userName.value).on("value", function(snapshot) {
+//   //   // console.log(snapshot.val());
+//   //   snapshot.forEach(function(data) {
+//   //     // if(data.key) {
+//   //       // this.currentUser.apply(data.key);
+//   //       if(data) {
+//   //       console.log(data.key);
+//   //       currentUser = data.key;
+//   //       console.log(currentUser);
+//   //       }
+//   //       else { console.log("user doesn't exist");}
+
+//   //   });
+//   this.currentUser = usersRef.orderByChild('username').equalTo(userName.value).on('value', function(snapshot) {
+//     snapshot.forEach(function(data){
+//       console.log(data.key);
+//     })
+//   });
+//   };
 
 // Checks that the Firebase SDK has been correctly setup and configured.
 EduChange.prototype.checkSetup = function() {
