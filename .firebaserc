@@ -1,6 +1,5 @@
 {
   "projects": {
-    "staging": "friendlychat-ed4dd",
-    "server": "educhange-nwhacks"
+    "default": "educhange-nwhacks"
   }
 }
