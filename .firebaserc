@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "educhange-nwhacks"
+    "default": "educhange-nwhacks",
+    "staging": "educhange-nwhacks"
   }
 }
