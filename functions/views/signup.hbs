@@ -10,7 +10,13 @@
 </head>
 
 <body>
-    This is the signup.
+    <h1>Sign Up</h1>
+    <form actions="/signup" method="POST">
+        <label for="email">Email: </label>
+        <input type="text" name="email" placeholder="Type in your email"/>
+        <input type="password" name="password" placeholder="Type in your password" />
+        <input type="submit" value="Submit" />
+    </form>
 </body>
 
 </html>
