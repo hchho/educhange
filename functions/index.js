@@ -5,15 +5,6 @@ const bodyParser = require('body-parser');
 const engines = require('consolidate');
 const morgan = require('morgan');
 
-var config = {
-    apiKey: "AIzaSyB4WsRTYAg27pPz_Hdf-pLcaZPR-IxlHB0",
-    authDomain: "educhange-nwhacks.firebaseapp.com",
-    databaseURL: "https://educhange-nwhacks.firebaseio.com",
-    projectId: "educhange-nwhacks",
-    storageBucket: "educhange-nwhacks.appspot.com",
-    messagingSenderId: "654557831315"
-};
-
 var currUser;
 
 firebase.initializeApp(config);
