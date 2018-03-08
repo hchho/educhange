@@ -58,7 +58,6 @@ app.set('views', './views');
 app.set('view engine', 'hbs');
 
 app.get('/', sessionChecker, (req, res, next) => {
-//    console.log(currUser);
     res.render('index', {"email" : currUser.email});
 });
 
@@ -88,11 +87,15 @@ app.get('/login', (req, res, next) => {
 app.post('/login', (req, res, next) => {
     firebase.auth().signInWithEmailAndPassword(req.body.email, req.body.password).then((user) => {
         setUser(user);
-        res.redirect('/');
+        res.redirect('/dashboard');
     })
         .catch((err) => {
         res.send(err);
     });
+});
+
+app.get('/dashboard', sessionChecker, (req, res, next) => {
+    res.render('dashboard', {"email" : currUser.email, "uid" : currUser.uid});
 });
 
 exports.app = functions.https.onRequest(app);
