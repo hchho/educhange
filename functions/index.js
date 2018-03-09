@@ -101,7 +101,6 @@ app.get('/dashboard', sessionChecker, (req, res, next) => {
 
 app.get('/session', sessionChecker, (req, res, next) => {
     sessionRef.orderByChild('owner').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
-        console.log(snap.val());
         sessionObjs = snap.val();
     });
     res.render('session', {"sessions": sessionObjs});

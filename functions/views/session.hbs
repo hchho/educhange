@@ -17,7 +17,7 @@
     </form>
     <ol>
     {{#each sessions}}
-        <li>{{session_name}}</li>
+        <li>Value = {{#this}} {{session_name}}{{/this}}</li>
     {{/each}}
     </ol>
     <a href="/">Back to home</a>
