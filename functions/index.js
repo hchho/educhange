@@ -27,10 +27,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 var sess = {
+    key: 'user_sid',
     secret: "damn-secretive",
     resave: false,
     saveUninitialized: true,
-    cookie: {secure: false}
+    cookie: {
+        secure: false,
+        expires: 600000
+    }
 }
 
 if (app.get('env') === 'production') {
@@ -87,6 +91,9 @@ app.get('/login', (req, res, next) => {
 
 app.post('/login', (req, res, next) => {
     firebase.auth().signInWithEmailAndPassword(req.body.email, req.body.password).then((user) => {
+        var old = req.session;
+        req.session.user = user;
+        console.log(req.session);
         setUser(user);
         res.redirect('/dashboard');
     })
@@ -96,6 +103,7 @@ app.post('/login', (req, res, next) => {
 });
 
 app.get('/dashboard', sessionChecker, (req, res, next) => {
+    console.log(req.session);
     res.render('dashboard', {"email" : currUser.email, "uid" : currUser.uid});
 });
 
