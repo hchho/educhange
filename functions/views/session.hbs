@@ -10,9 +10,17 @@
 </head>
 
 <body>
-    This is the index.
-    {{email}}
-    <a href="/signup">Sign up</a>
+    <form actions="/session" method="POST">
+        <label for="session_name">Session name: </label>
+        <input type="text" name="session_name" placeholder="Type in the session name"/>
+        <input type="submit" value="Submit" />
+    </form>
+    <ol>
+    {{#each sessions}}
+        <li>Value = {{#this}} {{session_name}}{{/this}}</li>
+    {{/each}}
+    </ol>
+    <a href="/">Back to home</a>
 </body>
 
 </html>

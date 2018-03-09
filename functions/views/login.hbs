@@ -10,8 +10,12 @@
 </head>
 
 <body>
-    This is the index.
-    {{email}}
+    <form actions="/login" method="POST">
+        <label for="email">Email: </label>
+        <input type="text" name="email" placeholder="Type in your email"/>
+        <input type="password" name="password" placeholder="Type in your password" />
+        <input type="submit" value="Submit" />
+    </form>
     <a href="/signup">Sign up</a>
 </body>
 
