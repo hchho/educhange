@@ -10,12 +10,17 @@
 </head>
 
 <body>
-    <P>User Details</P>
-    <ul>
-        <li>{{email}}</li>
-        <li>{{uid}}</li>
-    </ul>
-<a href="/session">Create a session</a>
+    <form actions="/session" method="POST">
+        <label for="session_name">Session name: </label>
+        <input type="text" name="session_name" placeholder="Type in the session name"/>
+        <input type="submit" value="Submit" />
+    </form>
+    <ol>
+    {{#each sessions}}
+        <li>{{session_name}}</li>
+    {{/each}}
+    </ol>
+    <a href="/">Back to home</a>
 </body>
 
 </html>

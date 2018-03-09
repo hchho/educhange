@@ -18,7 +18,9 @@ var config = {
 
 firebase.initializeApp(config);
 
+const database = firebase.database();
 const app = express();
+var sessionRef = database.ref('sessions');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,13 +33,12 @@ var sess = {
     cookie: {secure: false}
 }
 
-
 if (app.get('env') === 'production') {
     app.set('trust proxy', 1) // trust first proxy
     sess.cookie.secure = true // serve secure cookies
 }
 
-var currUser;
+var currUser, sessionObjs;
 
 var sessionChecker = (req, res, next) => {
     if(!currUser) {
@@ -73,7 +74,7 @@ app.post('/signup', (req, res, next) => {
         }, function(error) {
             console.log('Email not sent');
         });
-        res.redirect('/');
+        res.redirect('/dashboard');
     })
         .catch((err) => {
         res.send(err);
@@ -96,6 +97,24 @@ app.post('/login', (req, res, next) => {
 
 app.get('/dashboard', sessionChecker, (req, res, next) => {
     res.render('dashboard', {"email" : currUser.email, "uid" : currUser.uid});
+});
+
+app.get('/session', sessionChecker, (req, res, next) => {
+    sessionRef.orderByChild('owner').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
+        console.log(snap.val());
+        sessionObjs = snap.val();
+    });
+    res.render('session', {"sessions": sessionObjs});
+});
+
+app.post('/session', sessionChecker, (req, res, next) => {
+
+    var obj = {
+        session_name: req.body.session_name,
+        owner: currUser.uid
+    }
+    sessionRef.push(obj);
+    res.redirect('/session');
 });
 
 exports.app = functions.https.onRequest(app);
