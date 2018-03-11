@@ -1,14 +1,14 @@
 const functions = require('firebase-functions');
 const firebase = require('firebase');
+const admin = require('firebase-admin');
 const express = require('express');
-
 const bodyParser = require('body-parser');
 const engines = require('consolidate');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const FirebaseStore = require('connect-session-firebase')(session);
-// const firebase = require('firebase-admin');
+
+var serviceAccount = require('../educhange-428416896088.json');
 
 var config = {
     apiKey: "AIzaSyB4WsRTYAg27pPz_Hdf-pLcaZPR-IxlHB0",
@@ -21,6 +21,11 @@ var config = {
 
 firebase.initializeApp(config);
 
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://educhange-nwhacks.firebaseio.com'
+});
+
 const database = firebase.database();
 const app = express();
 const PORT = 5000;
@@ -30,43 +35,35 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// var sess = {
-//     key: 'user_sid',
-//     secret: "damn-secretive",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//         secure: false,
-//         expires: 600000
-//     }
-// }
-
 var sess = {
-    store: new FirebaseStore({
-      database: firebase.database()
-    }),
-    secret: 'keyboard cat',
-    resave: true,
-    saveUninitialized: true
-  }
+    key: 'user_sid',
+    secret: "damn-secretive",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        expires: 600000
+    }
+}
 
 if (app.get('env') === 'production') {
     app.set('trust proxy', 1) // trust first proxy
     sess.cookie.secure = true // serve secure cookies
 }
 
-var currUser, sessionObjs;
+var sessionObjs;
 
 var sessionChecker = (req, res, next) => {
-    if(!currUser) {
-        res.redirect('/login');
+    if(firebase.auth().currentUser) {
+        firebase.auth().currentUser.getIdToken(true)
+            .then(function(idToken) {
+            next();
+        }).catch(function(err) {
+            console.log(err);
+        });
     } else {
-        next();
+        res.redirect('/login');
     }
-}
-
-var setUser = (user) => {
-    currUser = user;
 }
 
 app.use(session(sess));
@@ -76,6 +73,7 @@ app.set('views', './views');
 app.set('view engine', 'hbs');
 
 app.get('/', sessionChecker, (req, res, next) => {
+    var currUser = firebase.auth().currentUser;
     res.render('index', {"email" : currUser.email});
 });
 
@@ -85,8 +83,7 @@ app.get('/signup', (req, res, next) => {
 
 app.post('/signup', (req, res, next) => {
     firebase.auth().createUserWithEmailAndPassword(req.body.email, req.body.password).then((user) => {
-        setUser(user);
-        currUser.sendEmailVerification().then(function() {
+        user.sendEmailVerification().then(function() {
             console.log('Email sent');
         }, function(error) {
             console.log('Email not sent');
@@ -104,10 +101,6 @@ app.get('/login', (req, res, next) => {
 
 app.post('/login', (req, res, next) => {
     firebase.auth().signInWithEmailAndPassword(req.body.email, req.body.password).then((user) => {
-        req.session.user = user;
-        console.log(req.session);
-        req.session.save();
-        setUser(user);
         res.redirect('/dashboard');
     })
         .catch((err) => {
@@ -117,11 +110,11 @@ app.post('/login', (req, res, next) => {
 });
 
 app.get('/dashboard', sessionChecker, (req, res, next) => {
-    console.log(req.session);
+    var currUser = firebase.auth().currentUser;
     res.render('dashboard', {"email" : currUser.email, "uid" : currUser.uid});
 });
 
-app.get('/session', sessionChecker, (req, res, next) => {
+app.get('/session', sessionChecker, (req, res, next) => { 
     sessionRef.orderByChild('owner').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
         sessionObjs = snap.val();
     });
