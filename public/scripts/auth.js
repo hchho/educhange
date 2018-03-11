@@ -12,25 +12,25 @@ firebase.initializeApp(config);
 function App() {
     var xhr = new XMLHttpRequest();
     var loginButton = document.getElementById('login');
-    var email = document.getElementById('email');
-    var password = document.getElementById('password');
+    var emailInput = document.getElementById('email');
+    var passwordInput = document.getElementById('password');
     loginButton.addEventListener('click', this.signIn.bind(this));
-    
+
     this.initFirebase();
+    console.log('App is starting');
 }
 
 App.prototype.initFirebase = function() {
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged.bind(this));
 }
 
-App.prototype.onAuthStateChanged = function () {
-    firebase.auth().onAuthStateChanged(function(user){
-        if (!user){
-            window.location.replace("/dashboard");
+App.prototype.onAuthStateChanged = function (user) {
+        console.log('Getting user status');
+        if (user){
+            console.log(user);
         } else {
-            console.log('asdf');
-            window.location.replace('/dashboard');
-        }});
+            console.log('no user');
+        }
 }
 
 //    firebase.auth().createUserWithEmailAndPassword(req.body.email, req.body.password).then((user) => {
@@ -46,8 +46,13 @@ App.prototype.onAuthStateChanged = function () {
 //    });
 
 App.prototype.signIn = function() {
-    firebase.auth().signInWithEmailAndPassword(this.email.value(), this.password.value());
-    console.log("asdf");
+    emailInput = document.getElementById('email');
+    passwordInput = document.getElementById('password');
+    firebase.auth().signInWithEmailAndPassword(emailInput.value, passwordInput.value).then(function(user) {
+//        console.log(user);
+    }).catch(function(error) {
+        console.log(error);
+    });
 };
 
 window.onload = function() {
