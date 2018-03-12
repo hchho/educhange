@@ -12,10 +12,8 @@ admin.initializeApp({
     databaseURL: 'https://educhange-nwhacks.firebaseio.com'
 });
 
-//const database = firebase.database();
 const app = express();
 const PORT = 5000;
-//var sessionRef = database.ref('sessions');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,37 +26,32 @@ if (app.get('env') === 'production') {
 
 var sessionObjs;
 
-//var sessionChecker = (req, res, next) => {
-//    if(firebase.auth().currentUser) {
-//        firebase.auth().currentUser.getIdToken(true)
-//            .then(function(idToken) {
-//            next();
-//        }).catch(function(err) {
-//            console.log(err);
-//        });
-//    } else {
-//        res.redirect('/login');
-//    }
-//}
-
-//app.use(session(sess));
+var sessionChecker = (req, res, next) => {
+    
+}
 
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
 app.set('view engine', 'hbs');
 
-app.get('/', (req, res, next) => {
-//    var currUser = admin.auth().currentUser;
-//    res.render('index', {"email" : currUser.email});
+app.post('/', sessionChecker, (req, res, next) => {
+    next();
+});
+
+app.get('/', sessionChecker, (req, res, next) => {
+    //    var currUser = admin.auth().currentUser;
+    //    res.render('index', {"email" : currUser.email});
     res.render('index');
 });
+
+
 
 app.get('/signup', (req, res, next) => {
     res.render('signup');
 });
 
 app.post('/signup', (req, res, next) => {
-    
+
 });
 
 app.get('/login', (req, res, next) => {
@@ -66,29 +59,36 @@ app.get('/login', (req, res, next) => {
 });
 
 app.post('/login', (req, res, next) => {
-    
-
+    admin.auth().verifyIdToken(req.body.token)
+        .then(function(decodedToken) {
+        var uid = decodedToken.uid;
+        console.log(uid);
+        res.status(200).send(uid);
+    }).catch(function(error) {
+        res.redirect('/login');
+    });
 });
 
 app.get('/dashboard', (req, res, next) => {
-//    var currUser = firebase.auth().currentUser;
-//    res.render('dashboard', {"email" : currUser.email, "uid" : currUser.uid});
-    res.send('success!');
+    //    var currUser = firebase.auth().currentUser;
+    //    res.render('dashboard', {"email" : currUser.email, "uid" : currUser.uid});
+    //    res.send('success!');
+    res.render('dashboard');
 });
 
 app.get('/session', (req, res, next) => { 
-//    sessionRef.orderByChild('owner').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
-//        sessionObjs = snap.val();
-//    });
+    //    sessionRef.orderByChild('owner').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
+    //        sessionObjs = snap.val();
+    //    });
     res.render('session', {"sessions": sessionObjs});
 });
 
 app.post('/session', (req, res, next) => {
     var obj = {
         session_name: req.body.session_name,
-//        owner: currUser.uid
+        //        owner: currUser.uid
     }
-//    sessionRef.push(obj);
+    //    sessionRef.push(obj);
     res.redirect('/session');
 });
 
