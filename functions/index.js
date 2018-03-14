@@ -43,24 +43,17 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/dashboard', (req, res, next) => {
-    //    var currUser = firebase.auth().currentUser;
-    //    res.render('dashboard', {"email" : currUser.email, "uid" : currUser.uid});
-    //    res.send('success!');
     res.render('dashboard');
 });
 
-app.post('/session', userCheck, (req, res, next) => {
-    let userEmail = req.body.user_email; 
-    let sessionObjs; sessionRef.orderByChild('user_email').equalTo(userEmail).limitToLast(2).on('value', function(snap) {
-        sessionObjs = snap.val();
-        res.send(sessionObjs);
-    });
-    res.render('index', {"sessions": sessionObjs});
-})
-
 app.get('/session', (req, res, next) => { 
-    res.render('session');
+        res.render('session');
 });
+
+app.get('/session/:sessionId', (req, res, next) => {
+    res.send('asdfa');
+});
+
 
 app.post('/session-form', userCheck, (req, res, next) => {
     var obj = {

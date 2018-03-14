@@ -8,66 +8,17 @@
         <link href="style/mainview.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-        <script>
-            var config = {
-                apiKey: "AIzaSyB4WsRTYAg27pPz_Hdf-pLcaZPR-IxlHB0",
-                authDomain: "educhange-nwhacks.firebaseapp.com",
-                databaseURL: "https://educhange-nwhacks.firebaseio.com",
-                projectId: "educhange-nwhacks",
-                storageBucket: "educhange-nwhacks.appspot.com",
-                messagingSenderId: "654557831315"
-            };
-
-            firebase.initializeApp(config);
-
-            function App() {
-                this.logoutButton = document.getElementById('logout');
-                this.logoutButton.addEventListener('click', this.signOut.bind(this));
-                this.initFirebase();
-            }
-
-            App.prototype.initFirebase = function() {
-                firebase.auth().onAuthStateChanged(this.onAuthStateChanged.bind(this));
-            }
-
-            App.prototype.onAuthStateChanged = function (user) {
-                if (user){
-                    user.getIdToken().then(function(idToken) {
-                        var xhttp = new XMLHttpRequest();
-                        xhttp.open("POST", "/session", true);
-                        xhttp.setRequestHeader("Content-type", "application/json");
-                        xhttp.send(JSON.stringify({user_token: idToken, user_email: user.email}));
-                    });
-                } else {
-                    location.replace('/');
-                }
-            }
-
-            App.prototype.signOut = function() {
-                firebase.auth().signOut().then(function() {
-                    alert("Signed out");
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            };
-
-            window.onload = function() {
-                window.app = new App();
-            }
-        </script>
+        <script src="scripts/session.js"></script>
     </head>
 
     <body>
         <div id="logout-form">
             <button id="logout" type="submit" >Logout</button>
+            <a href="/session-form">Create session</a>
             <a href="/session">Manage sessions</a>
         </div>
-        <ol>
-            {{#each sessions}}
-            <li>Value = {{#this}} {{session_name}}{{/this}}</li>
-            {{/each}}
-            {{test}}
-        </ol>
+        <div id="session_objs">
+        </div>
         <a href="/">Back to home</a>
     </body>
 </html>

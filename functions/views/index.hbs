@@ -9,6 +9,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
         <script src="scripts/auth.js"></script>
+        <script>
+            function process()
+            {
+                var url="/session/" + document.getElementById("session_id").value;
+                location.replace(url);
+                return false;
+            }
+        </script>
     </head>
 
     <body>
@@ -24,5 +32,10 @@
             <a href="/session-form">Create session</a>
             <a href="/session">Manage sessions</a>
         </div>
+        <form onSubmit="return process();">
+            Join a session:
+            <input type="text" id="session_id" name="session_id"/>
+            <input type="submit" value="Join"/>
+        </form>
     </body>
 </html>
