@@ -31,9 +31,9 @@ app.set('view engine', 'hbs');
 
 var userCheck = (req, res, next) => {
     admin.auth().verifyIdToken(req.body.user_token).then(
-    function(decodedToken) {
-        next();
-    }).catch(function(error) {
+        function(decodedToken) {
+            next();
+        }).catch(function(error) {
         console.log(error);
     });
 }
@@ -50,12 +50,12 @@ app.get('/dashboard', (req, res, next) => {
 });
 
 app.post('/session', userCheck, (req, res, next) => {
-   let userToken = req.body.user_token; 
-    
-    sessionRef.orderByChild('uid').equalTo(userToken).limitToLast(2).on('value', function(snap) {
-        console.log(snap.val());
-            res.render('session', {"sessions": snap.val()});
-        });
+    let userEmail = req.body.user_email; 
+    let sessionObjs; sessionRef.orderByChild('user_email').equalTo(userEmail).limitToLast(2).on('value', function(snap) {
+        sessionObjs = snap.val();
+        res.send(sessionObjs);
+    });
+    res.render('index', {"sessions": sessionObjs});
 })
 
 app.get('/session', (req, res, next) => { 
@@ -65,7 +65,7 @@ app.get('/session', (req, res, next) => {
 app.post('/session-form', userCheck, (req, res, next) => {
     var obj = {
         session_name: req.body.session_name,
-        uid: req.body.user_token
+        user_email: req.body.user_email
     }
     sessionRef.push(obj);
     res.redirect('/session');

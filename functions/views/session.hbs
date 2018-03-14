@@ -36,7 +36,7 @@
                         var xhttp = new XMLHttpRequest();
                         xhttp.open("POST", "/session", true);
                         xhttp.setRequestHeader("Content-type", "application/json");
-                        xhttp.send(JSON.stringify({user_token: idToken}));
+                        xhttp.send(JSON.stringify({user_token: idToken, user_email: user.email}));
                     });
                 } else {
                     location.replace('/');
@@ -66,6 +66,7 @@
             {{#each sessions}}
             <li>Value = {{#this}} {{session_name}}{{/this}}</li>
             {{/each}}
+            {{test}}
         </ol>
         <a href="/">Back to home</a>
     </body>
