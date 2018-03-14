@@ -30,24 +30,14 @@ App.prototype.initFirebase = function() {
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged.bind(this));
 }
 
-//xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        location.replace('/dashboard');
-//    }
-//};
-
 App.prototype.onAuthStateChanged = function (user) {
     console.log('Getting user status');
     if (user){
-        //        console.log(user);
         this.loginForm.setAttribute('hidden', 'true');
         this.logoutForm.removeAttribute('hidden');
-//        this.signUp.setAttribute('hidden', 'true');
-        //        location.replace('/dashboard');
     } else {
         this.loginForm.removeAttribute('hidden');
         this.logoutForm.setAttribute('hidden', 'true');
-//        this.signUp.removeAttribute('hidden');
         console.log('no user');
     }
 }

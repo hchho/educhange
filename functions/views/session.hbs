@@ -31,9 +31,13 @@
             }
 
             App.prototype.onAuthStateChanged = function (user) {
-                console.log('Getting user status');
                 if (user){
-                    console.log('there is a user');
+                    user.getIdToken().then(function(idToken) {
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.open("POST", "/session", true);
+                        xhttp.setRequestHeader("Content-type", "application/json");
+                        xhttp.send(JSON.stringify({user_token: idToken}));
+                    });
                 } else {
                     location.replace('/');
                 }

@@ -25,11 +25,18 @@ if (app.get('env') === 'production') {
     sess.cookie.secure = true // serve secure cookies
 }
 
-var sessionObjs;
-
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
 app.set('view engine', 'hbs');
+
+var userCheck = (req, res, next) => {
+    admin.auth().verifyIdToken(req.body.user_token).then(
+    function(decodedToken) {
+        next();
+    }).catch(function(error) {
+        console.log(error);
+    });
+}
 
 app.get('/', (req, res, next) => {
     res.render('index');
@@ -42,19 +49,24 @@ app.get('/dashboard', (req, res, next) => {
     res.render('dashboard');
 });
 
-app.get('/session', (req, res, next) => { 
-        sessionRef.orderByChild('uid').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
-            sessionObjs = snap.val();
+app.post('/session', userCheck, (req, res, next) => {
+   let userToken = req.body.user_token; 
+    
+    sessionRef.orderByChild('uid').equalTo(userToken).limitToLast(2).on('value', function(snap) {
+        console.log(snap.val());
+            res.render('session', {"sessions": snap.val()});
         });
-    res.render('session', {"sessions": sessionObjs});
+})
+
+app.get('/session', (req, res, next) => { 
+    res.render('session');
 });
 
-app.post('/session-form', (req, res, next) => {
+app.post('/session-form', userCheck, (req, res, next) => {
     var obj = {
         session_name: req.body.session_name,
         uid: req.body.user_token
     }
-    console.log(obj);
     sessionRef.push(obj);
     res.redirect('/session');
 });
