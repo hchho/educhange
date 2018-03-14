@@ -33,7 +33,9 @@
             App.prototype.onAuthStateChanged = function (user) {
                 console.log('Getting user status');
                 if (user){
-                    console.log('there is a user');
+                    user.getIdToken().then(function(idToken) {
+                        document.getElementById('session-form').user_token.value = idToken; 
+                    });
                 } else {
                     location.replace('/');
                 }
@@ -46,7 +48,7 @@
                     console.log(error);
                 });
             };
-
+            
             window.onload = function() {
                 window.app = new App();
             }
@@ -58,11 +60,12 @@
             <button id="logout" type="submit" >Logout</button>
             <a href="/session">Manage sessions</a>
         </div>
-        <ol>
-            {{#each sessions}}
-            <li>Value = {{#this}} {{session_name}}{{/this}}</li>
-            {{/each}}
-        </ol>
-        <a href="/">Back to home</a>
+        <form id="session-form" method="POST" action="/session-form">
+            <label for="session_name">Session name:</label>
+            <input type="text" id="session_name" name="session_name" placeholder="Type in the session name"/>
+            <button id="login" type="submit" >Create session</button>
+            <input type="hidden" name="user_token" id="user_token" value="null"/>
+        </form>
     </body>
+
 </html>

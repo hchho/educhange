@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-    <link href="style/global.css" rel="stylesheet">
-    <link href="style/mainview.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous">
+        <link href="style/global.css" rel="stylesheet">
+        <link href="style/mainview.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+        <script src="scripts/auth.js"></script>
+    </head>
 
-<body>
-    This is the index.
-    {{email}}
-    <a href="/signup">Sign up</a>
-</body>
-
+    <body>
+        <div id="login-form">
+            <label for="email">Email: </label>
+            <input type="text" id="email" placeholder="Type in your email"/>
+            <input type="password" id="password" placeholder="Type in your password" />
+            <button id="login" type="submit" >Login</button>
+            <a id="sign-up" href="/signup">Sign up</a>
+        </div>
+        <div id="logout-form">
+            <button id="logout" type="submit" >Logout</button>
+            <a href="/session-form">Create session</a>
+            <a href="/session">Manage sessions</a>
+        </div>
+    </body>
 </html>

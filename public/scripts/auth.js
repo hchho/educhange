@@ -12,10 +12,16 @@ firebase.initializeApp(config);
 var xhttp = new XMLHttpRequest();
 
 function App() {
-    var loginButton = document.getElementById('login');
-    var emailInput = document.getElementById('email');
-    var passwordInput = document.getElementById('password');
-    loginButton.addEventListener('click', this.signIn.bind(this));
+    this.loginForm = document.getElementById('login-form');
+    this.logoutForm = document.getElementById('logout-form');
+    this.loginButton = document.getElementById('login');
+    this.logoutButton = document.getElementById('logout');
+    this.signUp = document.getElementById('sign-up');
+    this.emailInput = document.getElementById('email');
+    this.passwordInput = document.getElementById('password');
+
+    this.loginButton.addEventListener('click', this.signIn.bind(this));
+    this.logoutButton.addEventListener('click', this.signOut.bind(this));
 
     this.initFirebase();
 }
@@ -24,23 +30,24 @@ App.prototype.initFirebase = function() {
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged.bind(this));
 }
 
-xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        location.replace('/dashboard');
-    }
-};
+//xhttp.onreadystatechange = function() {
+//    if (this.readyState == 4 && this.status == 200) {
+//        location.replace('/dashboard');
+//    }
+//};
 
 App.prototype.onAuthStateChanged = function (user) {
     console.log('Getting user status');
     if (user){
-        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-            xhttp.open("POST", "/login", true);
-            xhttp.setRequestHeader("Content-type", "application/json");
-            xhttp.send(JSON.stringify({token: idToken}));
-        }).catch(function(error) {
-            console.log(error);
-        });
+        //        console.log(user);
+        this.loginForm.setAttribute('hidden', 'true');
+        this.logoutForm.removeAttribute('hidden');
+//        this.signUp.setAttribute('hidden', 'true');
+        //        location.replace('/dashboard');
     } else {
+        this.loginForm.removeAttribute('hidden');
+        this.logoutForm.setAttribute('hidden', 'true');
+//        this.signUp.removeAttribute('hidden');
         console.log('no user');
     }
 }
@@ -49,7 +56,15 @@ App.prototype.signIn = function() {
     emailInput = document.getElementById('email');
     passwordInput = document.getElementById('password');
     firebase.auth().signInWithEmailAndPassword(emailInput.value, passwordInput.value).then(function(user) {
-        //        console.log(user);
+        alert("Welcome, " + user.email);
+    }).catch(function(error) {
+        console.log(error);
+    });
+};
+
+App.prototype.signOut = function() {
+    firebase.auth().signOut().then(function() {
+        alert("Signed out");
     }).catch(function(error) {
         console.log(error);
     });

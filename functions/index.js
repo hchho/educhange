@@ -12,6 +12,7 @@ admin.initializeApp({
     databaseURL: 'https://educhange-nwhacks.firebaseio.com'
 });
 
+var sessionRef= admin.database().ref("/sessions");
 const app = express();
 const PORT = 5000;
 
@@ -26,47 +27,12 @@ if (app.get('env') === 'production') {
 
 var sessionObjs;
 
-var sessionChecker = (req, res, next) => {
-    
-}
-
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
 app.set('view engine', 'hbs');
 
-app.post('/', sessionChecker, (req, res, next) => {
-    next();
-});
-
-app.get('/', sessionChecker, (req, res, next) => {
-    //    var currUser = admin.auth().currentUser;
-    //    res.render('index', {"email" : currUser.email});
+app.get('/', (req, res, next) => {
     res.render('index');
-});
-
-
-
-app.get('/signup', (req, res, next) => {
-    res.render('signup');
-});
-
-app.post('/signup', (req, res, next) => {
-
-});
-
-app.get('/login', (req, res, next) => {
-    res.render('login'); 
-});
-
-app.post('/login', (req, res, next) => {
-    admin.auth().verifyIdToken(req.body.token)
-        .then(function(decodedToken) {
-        var uid = decodedToken.uid;
-        console.log(uid);
-        res.status(200).send(uid);
-    }).catch(function(error) {
-        res.redirect('/login');
-    });
 });
 
 app.get('/dashboard', (req, res, next) => {
@@ -77,19 +43,24 @@ app.get('/dashboard', (req, res, next) => {
 });
 
 app.get('/session', (req, res, next) => { 
-    //    sessionRef.orderByChild('owner').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
-    //        sessionObjs = snap.val();
-    //    });
+        sessionRef.orderByChild('uid').equalTo(currUser.uid).limitToLast(3).on('value', function(snap) {
+            sessionObjs = snap.val();
+        });
     res.render('session', {"sessions": sessionObjs});
 });
 
-app.post('/session', (req, res, next) => {
+app.post('/session-form', (req, res, next) => {
     var obj = {
         session_name: req.body.session_name,
-        //        owner: currUser.uid
+        uid: req.body.user_token
     }
-    //    sessionRef.push(obj);
+    console.log(obj);
+    sessionRef.push(obj);
     res.redirect('/session');
+});
+
+app.get('/session-form', (req, res, next) => {
+    res.render('session_form');
 });
 
 exports.app = functions.https.onRequest(app);

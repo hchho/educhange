@@ -16,23 +16,18 @@ function App() {
 }
 
 App.prototype.initFirebase = function() {
-   if(firebase.auth().currentUser) {
-       console.log('There is a user');
-   }  else {
-       console.log('There is no user');
-   }
+    if(firebase.auth().currentUser) {
+        console.log('There is a user');
+    }  else {
+        console.log('There is no user');
+    }
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged.bind(this));
 }
-
-//xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        location.replace('/dashboard');
-//    }
-//};
 
 App.prototype.onAuthStateChanged = function (user) {
     console.log('Getting user status');
     if (user){
+        console.log(user);
         firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
 
             xhttp.open("POST", "/login", true);
