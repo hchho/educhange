@@ -1,4 +1,15 @@
-var config = {
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous">
+        <link href="../style/global.css" rel="stylesheet">
+        <link href="../style/mainview.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+        <script>
+            var config = {
                 apiKey: "AIzaSyB4WsRTYAg27pPz_Hdf-pLcaZPR-IxlHB0",
                 authDomain: "educhange-nwhacks.firebaseapp.com",
                 databaseURL: "https://educhange-nwhacks.firebaseio.com",
@@ -26,7 +37,7 @@ var config = {
                 if (user){
                     var sessionRef= firebase.database().ref("/sessions");
                     sessionRef.orderByChild('user_email').equalTo(user.email).limitToLast(2).on('value', function(snap) {
-                        generateSessions(snap.val());
+                        console.log(snap.val())
                     });
                 } else {
                     location.replace('/');
@@ -41,17 +52,22 @@ var config = {
                 });
             };
 
-            var generateSessions = function(objects) {
-                var text = "<ol>"
-                for (var key in objects) {
-                    if (objects.hasOwnProperty(key)) {
-                        text += "<li><a href='/session/" + key + "'>" + objects[key]['session_name'] + "</a></li>";
-                    }
-                }
-                text += "</ol>";
-                document.getElementById('session_objs').innerHTML = text;
-            }
-
             window.onload = function() {
                 window.app = new App();
             }
+        </script>
+    </head>
+
+    <body>
+        <div id="logout-form">
+            <button id="logout" type="submit" >Logout</button>
+            <a href="/session-form">Create session</a>
+            <a href="/session">Manage sessions</a>
+        </div>
+        <div id="session">
+            <h1>{{session_name}}</h1>
+            <h3>Host: {{host}}</h3>
+        </div>
+        <a href="/">Back to home</a>
+    </body>
+</html>

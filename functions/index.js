@@ -47,11 +47,18 @@ app.get('/dashboard', (req, res, next) => {
 });
 
 app.get('/session', (req, res, next) => { 
-        res.render('session');
+    res.render('session');
 });
 
 app.get('/session/:sessionId', (req, res, next) => {
-    res.send('asdfa');
+    let sessionId = req.params.sessionId;
+    admin.database().ref('/sessions/' + sessionId).once('value').then(function(snap) {
+        var snapshot = snap.val();
+        console.log(snapshot.session_name);
+        res.render('session_id', {"session_name" : snapshot.session_name, "host" : snapshot.user_email})
+    }).catch(function(error) {
+        console.log(error);
+    });
 });
 
 
