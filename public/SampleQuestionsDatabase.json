@@ -1,8 +1,0 @@
-
-var QuestionsDB = [ { 
-    StudentName: "Millie Bobby Brown",
-    Question: "Why is the sky blue"
-}, { 
-    StudentName: "Ritchie Tosure",
-    Question: "Why is the grass green?"
-}];
