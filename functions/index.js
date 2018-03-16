@@ -14,6 +14,18 @@ var sessionRef= admin.database().ref("/sessions");
 const app = express();
 const PORT = 5000;
 
+var headerContents = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">' + 
+    '<link href="../style/global.css" rel="stylesheet">' + 
+    '<link href="../style/mainview.css" rel="stylesheet">' + 
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">' + 
+    '<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>'
+
+var logoutForm = '<div id="logout-form">' + 
+    '<button id="logout" type="submit" >Logout</button>' + 
+    '<a href="/session-form">Create session</a>' + 
+    '<a href="/session">Manage sessions</a>' + 
+    '</div>'
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -31,7 +43,7 @@ var userCheck = (req, res, next) => {
 }
 
 app.get('/', (req, res, next) => {
-    res.render('index');
+    res.render('index', {"headerContents": headerContents, "logoutForm" : logoutForm});
 });
 
 app.get('/dashboard', (req, res, next) => {
@@ -39,7 +51,7 @@ app.get('/dashboard', (req, res, next) => {
 });
 
 app.get('/session', (req, res, next) => { 
-    res.render('session');
+    res.render('session', {"headerContents": headerContents, "logoutForm" : logoutForm});
 });
 
 app.get('/session/:sessionId', (req, res, next) => {
@@ -47,12 +59,11 @@ app.get('/session/:sessionId', (req, res, next) => {
     admin.database().ref('/sessions/' + sessionId).once('value').then(function(snap) {
         var snapshot = snap.val();
         console.log(snapshot.session_name);
-        res.render('session_id', {"session_name" : snapshot.session_name, "host" : snapshot.user_email})
+        res.render('session_id', {"session_name" : snapshot.session_name, "host" : snapshot.user_email, "logoutForm": logoutForm, "headerContents": headerContents})
     }).catch(function(error) {
         console.log(error);
     });
 });
-
 
 app.post('/session-form', userCheck, (req, res, next) => {
     var obj = {
@@ -64,7 +75,7 @@ app.post('/session-form', userCheck, (req, res, next) => {
 });
 
 app.get('/session-form', (req, res, next) => {
-    res.render('session_form');
+    res.render('session_form', {"headerContents": headerContents, "logoutForm": logoutForm});
 });
 
 exports.app = functions.https.onRequest(app);

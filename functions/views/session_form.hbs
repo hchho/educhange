@@ -2,65 +2,12 @@
 <html lang="en">
 
     <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-              crossorigin="anonymous">
-        <link href="style/global.css" rel="stylesheet">
-        <link href="style/mainview.css" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-        <script>
-            var config = {
-                apiKey: "AIzaSyB4WsRTYAg27pPz_Hdf-pLcaZPR-IxlHB0",
-                authDomain: "educhange-nwhacks.firebaseapp.com",
-                databaseURL: "https://educhange-nwhacks.firebaseio.com",
-                projectId: "educhange-nwhacks",
-                storageBucket: "educhange-nwhacks.appspot.com",
-                messagingSenderId: "654557831315"
-            };
-
-            firebase.initializeApp(config);
-
-            function App() {
-                this.logoutButton = document.getElementById('logout');
-                this.logoutButton.addEventListener('click', this.signOut.bind(this));
-                this.initFirebase();
-            }
-
-            App.prototype.initFirebase = function() {
-                firebase.auth().onAuthStateChanged(this.onAuthStateChanged.bind(this));
-            }
-
-            App.prototype.onAuthStateChanged = function (user) {
-                console.log('Getting user status');
-                if (user){
-                    document.getElementById('session-form').user_email.value = user.email;
-                    user.getIdToken().then(function(idToken) {
-                        document.getElementById('session-form').user_token.value = idToken;
-                    });
-                } else {
-                    location.replace('/');
-                }
-            }
-
-            App.prototype.signOut = function() {
-                firebase.auth().signOut().then(function() {
-                    alert("Signed out");
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            };
-            
-            window.onload = function() {
-                window.app = new App();
-            }
-        </script>
+        {{{headerContents}}}
+        <script src="scripts/session_form.js"></script>
     </head>
 
     <body>
-        <div id="logout-form">
-            <button id="logout" type="submit" >Logout</button>
-            <a href="/session">Manage sessions</a>
-        </div>
+        {{{logoutForm}}}
         <form id="session-form" method="POST" action="/session-form">
             <label for="session_name">Session name:</label>
             <input type="text" id="session_name" name="session_name" placeholder="Type in the session name"/>

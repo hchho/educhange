@@ -35,11 +35,7 @@
             <button id="login" type="submit" >Login</button>
             <a id="sign-up" href="/signup">Sign up</a>
         </div>
-        <div id="logout-form">
-            <button id="logout" type="submit" >Logout</button>
-            <a href="/session-form">Create session</a>
-            <a href="/session">Manage sessions</a>
-        </div>
+        {{{logoutForm}}}
         <form onSubmit="return process();">
             Join a session:
             <input type="text" id="session_id" name="session_id"/>
