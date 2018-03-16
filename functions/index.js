@@ -5,10 +5,8 @@ const bodyParser = require('body-parser');
 const engines = require('consolidate');
 const morgan = require('morgan');
 
-var serviceAccount = require('../educhange-428416896088.json');
-
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert('./educhange-428416896088.json'),
     databaseURL: 'https://educhange-nwhacks.firebaseio.com'
 });
 
@@ -18,12 +16,6 @@ const PORT = 5000;
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
-if (app.get('env') === 'production') {
-    app.set('trust proxy', 1) // trust first proxy
-    sess.cookie.secure = true // serve secure cookies
-}
 
 app.engine('hbs', engines.handlebars);
 app.set('views', './views');
