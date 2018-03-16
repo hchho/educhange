@@ -1,7 +1,7 @@
 {
   "name": "Educhange",
   "short_name": "Educhange",
-  "start_url": "/server-test.html",
+  "start_url": "/functions/index.hbs",
   "display": "standalone",
   "orientation": "portrait"
 }

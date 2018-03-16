@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "name": "Educhange",
-  "launch_path": "/index.html",
-  "description": "Chat with friends using Firebase 2.0",
+  "launch_path": "/functions/index.hbs",
+  "description": "Ask questions using Firebase 2.0",
   "developer": {
     "name": "Google inc.",
     "url": "https://firebase.google.com"
@@ -16,7 +16,7 @@
   "locales": {
     "en": {
       "name": "Educhange,
-      "description": "Chat with friends using Firebase 2.0"
+      "description": "Ask questions using Firebase 2.0"
     }
   }
 }
