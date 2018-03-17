@@ -9,8 +9,6 @@ var config = {
 
 firebase.initializeApp(config);
 
-var xhttp = new XMLHttpRequest();
-
 function App() {
     this.loginForm = document.getElementById('login-form');
     this.logoutForm = document.getElementById('logout-form');
@@ -31,7 +29,6 @@ App.prototype.initFirebase = function() {
 }
 
 App.prototype.onAuthStateChanged = function (user) {
-    console.log('Getting user status');
     if (user){
         this.loginForm.setAttribute('hidden', 'true');
         this.logoutForm.removeAttribute('hidden');
