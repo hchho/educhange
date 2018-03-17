@@ -28,14 +28,16 @@
     </head>
 
     <body>
-        <div id="login-form">
-            <label for="email">Email: </label>
-            <input type="text" id="email" placeholder="Type in your email"/>
-            <input type="password" id="password" placeholder="Type in your password" />
-            <button id="login" type="submit" >Login</button>
-            <a id="sign-up" href="/signup">Sign up</a>
-        </div>
-        {{{logoutForm}}}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div id="login-form">
+                <label for="email">Email: </label>
+                <input type="text" id="email" placeholder="Type in your email"/>
+                <input type="password" id="password" placeholder="Type in your password" />
+                <button id="login" type="submit" >Login</button>
+                <a id="sign-up" href="/signup">Sign up</a>
+            </div>
+            {{{logoutForm}}}
+        </nav>
         <form onSubmit="return process();">
             Join a session:
             <input type="text" id="session_id" name="session_id"/>
