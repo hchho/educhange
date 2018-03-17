@@ -4,26 +4,30 @@
     <head>
         {{{headerContents}}}
         <script src="scripts/session_id.js">
-            
+
         </script>
     </head>
 
     <body>
-        {{{logoutForm}}}
-        <a href="/">Back to home</a>
-        <div id="session">
-            <h1>{{session_name}}</h1>
-            <h3>Host: {{host}}</h3>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                {{{logoutForm}}}
+            </nav>
+            <a href="/">Back to home</a>
+            <div id="session">
+                <h1>{{session_name}}</h1>
+                <h3>Host: {{host}}</h3>
+            </div>
+            <form id="question-form">
+                <label for="fname">First name:</label>
+                <input type="text" id="fname" placeholder="First name." />
+                <label for="lname">Last name:</label>
+                <input type="text" id="lname" placeholder="Last name." />
+                <label for="question">Question:</label>
+                <input type="text" id="question" placeholder="Type your question in here." />
+                <button id="question_submit" type="submit">Submit</button>
+            </form>
+            <div id="questions"></div>
         </div>
-        <form id="question-form">
-            <label for="fname">First name:</label>
-            <input type="text" id="fname" placeholder="First name." />
-            <label for="lname">Last name:</label>
-            <input type="text" id="lname" placeholder="Last name." />
-            <label for="question">Question:</label>
-            <input type="text" id="question" placeholder="Type your question in here." />
-            <button id="question_submit" type="submit">Submit</button>
-        </form>
-        <div id="questions"></div>
     </body>
 </html>

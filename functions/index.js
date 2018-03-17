@@ -4,6 +4,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const engines = require('consolidate');
 const morgan = require('morgan');
+var template = require('./template');
+
+var headerContents = template.headerContents;
+var loginForm = template.loginForm;
+var logoutForm = template.logoutForm;
 
 admin.initializeApp({
     credential: admin.credential.cert('./educhange-428416896088.json'),
@@ -13,18 +18,6 @@ admin.initializeApp({
 var sessionRef= admin.database().ref("/sessions");
 const app = express();
 const PORT = 5000;
-
-var headerContents = 
-    '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">' + 
-    '<meta name="viewport" content="width=device-width, initial-scale=1.0">' + 
-    '<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>' + '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>' + '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>' + 
-    '<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>'
-
-var logoutForm = '<div id="logout-form">' + 
-    '<button class="btn-primary" id="logout" type="submit" >Logout</button>' + 
-    '<a href="/session-form">Create session</a>' + 
-    '<a href="/session">Manage sessions</a>' + 
-    '</div>'
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -43,7 +36,7 @@ var userCheck = (req, res, next) => {
 }
 
 app.get('/', (req, res, next) => {
-    res.render('index', {"headerContents": headerContents, "logoutForm" : logoutForm});
+    res.render('index', {"headerContents": headerContents, "loginForm": loginForm, "logoutForm" : logoutForm});
 });
 
 app.get('/dashboard', (req, res, next) => {
@@ -77,5 +70,9 @@ app.post('/session-form', userCheck, (req, res, next) => {
 app.get('/session-form', (req, res, next) => {
     res.render('session_form', {"headerContents": headerContents, "logoutForm": logoutForm});
 });
+
+app.get('/signup', (req, res, next) => {
+    res.render('signup', {"headerContents": headerContents, "loginForm": loginForm});
+})
 
 exports.app = functions.https.onRequest(app);
