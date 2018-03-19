@@ -40,7 +40,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/dashboard', (req, res, next) => {
-    res.render('dashboard');
+    res.render('dashboard', {"headerContents": headerContents, "logoutForm": logoutForm});
 });
 
 app.get('/session', (req, res, next) => { 

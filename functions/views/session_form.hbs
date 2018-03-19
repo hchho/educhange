@@ -12,11 +12,13 @@
                 {{{logoutForm}}}
             </nav>
             <form id="session-form" method="POST" action="/session-form">
-                <label for="session_name">Session name:</label>
-                <input type="text" id="session_name" name="session_name" placeholder="Type in the session name"/>
-                <button id="login" type="submit" >Create session</button>
-                <input type="hidden" name="user_email" id="user_email" value="null"/>
-                <input type="hidden" name="user_token" id="user_token" value="null"/>
+                <div class="form-group">
+                    <label for="session_name">Session name:</label>
+                    <input class="form-control" type="text" id="session_name" name="session_name" placeholder="Type in the session name"/>
+                </div>
+                    <button class="btn btn-primary" id="login" type="submit" >Create session</button>
+                    <input type="hidden" name="user_email" id="user_email" value="null"/>
+                    <input type="hidden" name="user_token" id="user_token" value="null"/>
             </form>
         </div>
     </body>
