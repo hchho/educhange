@@ -49,6 +49,9 @@ app.get('/session', (req, res, next) => {
 
 app.get('/session/:sessionId', (req, res, next) => {
     let sessionId = req.params.sessionId;
+    if (!admin.database().ref('/sessions/' + sessionId)) {
+        res.redirect('/');
+    }
     admin.database().ref('/sessions/' + sessionId).once('value').then(function(snap) {
         var snapshot = snap.val();
         console.log(snapshot.session_name);
